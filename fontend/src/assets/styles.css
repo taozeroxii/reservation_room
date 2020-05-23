@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+html,body{
+    font-family: 'Roboto', sans-serif;
+}
+
+body{background-color: #EEEEEE;}
+
+.card,.card-header,.form-control,.btn{
+    border-radius: 0 !important;
+}
+
+.card-header{
+    border-radius: 0 !important;
+    background-color: #17A2B8;
+    color:white;
+}
+
+label{
+    color:#6C757D;
+    font-weight: 300;
+}
+
+.table th{
+    color:#525B62;
+    font-weight: 400;
+}
+.table td{
+    color:#525B62;
+    font-weight: 300;
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+.pointer{
+    cursor: pointer !important;
+}
+
+.img-container{
+    width: 123px;
+    height: 69px;
+    border: solid 1px;
+    display: table-cell;
+    text-align:center;
+    vertical-align: middle;
+  }
+  .img-container img{
+    width: 100%;
+    height: 100%;
+  }
+
+  .pagination li.active .page-link
+  {
+    border-color:#17A2B8 ;
+    background-color:#17A2B8 ;
+  }
+  .page-link,
+  .page-link:hover,
+  .pagination-link:focus
+  {
+      color:#17A2B8 ;
+      box-shadow: none;
+  }
+  .layout{
+      margin-bottom: 30px;
+  }
+

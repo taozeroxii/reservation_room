@@ -1,0 +1,99 @@
+<template>
+  <Layout>
+    <Search :types="search_types" @onSearch="onSearch($event)"/>
+    <div class="form-group">
+      <router-link class="btn btn-menu" :to="{name:'booking-room'}">รายการข้อมูล</router-link>
+      <router-link class="btn btn-menu" :to="{name:'room-form'}">เพิ่มข้อมูลใหม่</router-link>
+    </div>
+ 
+    <div class="card mb-3" v-for="item in rooms.result" :key="item.r_id">
+      <div class="row align-items-center">
+        <div class="col-lg-4">
+          <div class="card-body">
+            <img :src="`/api/uploads/${item.r_image}`" alt class="img-booking" />
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="card-body">
+            <div>ชื่อห้อง :{{item.r_name}}</div>
+            <div>ขนาด :{{item.r_capacity}}</div>
+            <div>รายละเอียด :{{ item.r_detail || 'ไม่มีข้อมูล'}}</div>
+            <div>
+                <button class="btn btn-info"><i class="fa fa-ticket"> จองห้องนี้</i> </button>
+                <button class="btn btn-secondary"><i class="fa fa-info"> รายละเอียด</i> </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <Pagination :data="rooms" :page="page" @onPage="onPage($event)"/>
+    <BookingDialog/>
+  </Layout>
+</template>
+
+<script>
+import Search from "@/components/Search";
+import { mapState } from "vuex";
+import Pagination from '@/components/Pagination';
+import BookingDialog from './BookingDialog'
+export default {
+  components: {
+    Search,
+    Pagination,
+    BookingDialog
+  },
+  computed: {
+    ...mapState(["rooms"])
+  },
+  data() {
+    return {
+      search_types: [
+        {name:"ชื่อห้อง",value:"r_name"},
+        {name:"ขนาดห้อง",value:"r_capacity"},
+        {name:"รายละเอียด",value:"r_detail"}
+      ],
+      page:1,
+      search:""
+    };
+  },
+  mounted() {
+    this.$store.dispatch("set_booking_rooms");
+  },
+  methods:{
+    onSearch(search){
+      this.search = search;
+      this.$store.dispatch("set_booking_rooms",{
+        page:1,
+        ...this.search
+      });
+      
+    },
+    onPage(page){
+      this.page = page;
+      //console.log(this.page);
+      this.$store.dispatch("set_booking_rooms",{
+        page: this.page,
+        ...this.search
+      });
+    }
+  }
+};
+</script>
+
+<style scoped>
+.btn-menu{
+  color: white;
+  background-color: #ced4da;
+  margin-right: 3px;
+}
+.router-link-exact-active {
+  background-color: #17a2b8;
+}
+.img-booking {
+  height:150px;
+}
+.card{
+    border-right: solid 5px #17a2b8;
+}
+</style>
