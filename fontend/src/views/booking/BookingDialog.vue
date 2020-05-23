@@ -51,15 +51,15 @@
               </div>
               <div class="col-sm-4">
                 <div class="form-check">
-                  <label class="form-check-label" for="defaultCheck1">
-                    <input class="form-check-input" type="checkbox" id="defaultCheck1" />ไมโครโฟน
+                  <label class="form-check-label" for="defaultCheck2">
+                    <input class="form-check-input" type="checkbox" id="defaultCheck2" />ไมโครโฟน
                   </label>
                 </div>
               </div>
               <div class="col-sm-4">
                 <div class="form-check">
-                  <label class="form-check-label" for="defaultCheck1">
-                    <input class="form-check-input" type="checkbox" id="defaultCheck1" />โปรเจคเตอร์
+                  <label class="form-check-label" for="defaultCheck3">
+                    <input class="form-check-input" type="checkbox" id="defaultCheck3" />โปรเจคเตอร์
                   </label>
                 </div>
               </div>
@@ -82,7 +82,7 @@ export default {
     };
   },
   mounted() {
-    this.jquery("#booking-dialog").modal();
+   // this.jquery("#booking-dialog").modal();
   }
 };
 </script>
@@ -97,6 +97,6 @@ export default {
   padding-right: 5%;
 }
 .form-check{
-  margin-top: 7px;
+  margin-bottom: 7px;
 }
 </style>
