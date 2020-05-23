@@ -76,13 +76,28 @@
 </template>
 <script>
 export default {
+  props: {
+    room: {
+      required: true
+    }
+  },
+  watch: {
+    room(value) {
+      if(!value){ return }
+      this.jquery("#booking-dialog").modal();
+      //console.log(value);
+    }
+  },
   data() {
     return {
       checkFakeitem: [1, 2, 3]
     };
   },
   mounted() {
-   // this.jquery("#booking-dialog").modal();
+    //ตรวจจับ event การปิดหน้า modal dialog 
+     this.jquery("#booking-dialog").on('hidden.bs.modal',(e) => {
+       this.$emit('onClose',event);
+       });
   }
 };
 </script>
@@ -96,7 +111,7 @@ export default {
   padding-left: 5%;
   padding-right: 5%;
 }
-.form-check{
+.form-check {
   margin-bottom: 7px;
 }
 </style>
