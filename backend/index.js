@@ -15,6 +15,11 @@ server.use(expressSession({
     cookie: {}
 }))
 
+//ปกป้อง HTTP HEADER ด้วย Helmet
+var helmet = require('helmet')
+server.use(helmet())
+
+
 // `ตั้งค่าการ parse ตัวแปรเมื่อ client request หรือส่งข้อมูลเข้ามา
 server.use(bodyParser.urlencoded({ extended: false,limit:'500MB' }));
 server.use(bodyParser.json({limit:'500MB'}));
