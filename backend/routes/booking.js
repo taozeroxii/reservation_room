@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { check, query } = require("express-validator");
 const roomservice = require(`../service/room`)
 const bookingService = require('../service/booking')
+const equipmentsService = require('../service/equipment')
 
 router.get('/',[query('page').not().isEmpty().toInt().isInt()],async (req,res)=>{
     try{
@@ -10,6 +11,15 @@ router.get('/',[query('page').not().isEmpty().toInt().isInt()],async (req,res)=>
     }
     catch(ex){res.error(ex);}
     res.json({message:'message booking'})
+})
+
+
+//แสดงข้อมูลอุปกรณ์ห้องประชุม
+router.get('/equipments',async (req,res) =>{
+    try{
+        res.json(await equipmentsService.findAll());
+    }
+    catch(ex){res.error(ex)}
 })
 
 //ประวัติการจอง

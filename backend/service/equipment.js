@@ -1,7 +1,18 @@
 const connection = require('../configs/database');
-const configs = require("../configs/index")
-
+const configs = require("../configs/index");
+const table = 'tb_equipments';
 module.exports = {
+
+    //แสดงข้อมูลทั้งหมดเอาไปทำ list check box หน้าการจอง
+    findAll(){
+        return new Promise((resolve,reject)=>{
+            connection.query(` SELECT eq_id,eq_name,eq_image FROM ${table}`,(error,result)=>{
+                if(error) return reject(error);
+                resolve(result)
+            })
+        })
+    },
+
     find(value) {
         return new Promise((resolve, reject) => {
             const limitPage = configs.limitPage;
