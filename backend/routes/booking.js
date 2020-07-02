@@ -38,7 +38,9 @@ router.get('/history',[
 //แสดงรายละเอียดของห้องประชุม
 router.get('/room/:id',async (req,res)=>{
     try{
-        res.json(await roomservice.findDetailforBooking(req.params.id))
+        const model = await roomservice.findDetailforBooking(req.params.id);
+        if(!model) throw new Error('ไม่พบข้อมูลห้อง');
+        res.json(model)
     }
     catch(ex){res.error(ex)}
 })

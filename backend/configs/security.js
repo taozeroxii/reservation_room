@@ -11,10 +11,10 @@ const security = {
     authenticated(req, res, next) {
 
         req.session.userLogin = {
-            "u_id": 5,
-            "u_username": "taotest",
-            "u_firstname": "รัชวิทย์",
-            "u_lastname": "test2",
+            "u_id": 1,
+            "u_username": "admin",
+            "u_firstname": "admin",
+            "u_lastname": "tao",
             "u_role": "admin"
         }
 
