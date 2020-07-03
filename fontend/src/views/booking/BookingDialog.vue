@@ -31,10 +31,14 @@
               <div class="form-group">
                 <label for>เริ่มประชุมวันที่</label>
                 <input type="date"  name="bk_time_start_date"
+                 v-model="form.bk_time_start.date"
                  :class="{'is-invalid':errors.has('bk_time_start_date')}" 
                  class="form-control" required/>
+
                 <label for>สิ้นสุดวันที่</label>
-                <input type="date" v-model="form.bk_time_end.date" class="form-control" required/>
+                <input type="date"   name="bk_time_end_date"   
+                :class="{'is-invalid':errors.has('bk_time_start_date')}"  
+                v-model="form.bk_time_end.date" class="form-control" required/>
               </div>
             </div>
             <div class="col-5">
@@ -54,14 +58,15 @@
                 <div class="form-check" :title="item.eq_name">
                   <label class="form-check-label">
                     <input class="form-check-input" 
-                    :true-value="item.eq_id"
+                    :true-value="item"
                     v-model="form.equipments[index]" 
                     type="checkbox"/>{{item.eq_name}}
                   </label>
                 </div>
               </div>
             </div>
-          </div>
+              <div class="img-equipments" v-for="item in equipmentitems" :key="item.eq_id" :style="{ 'background-image':`url(/api/uploads/${item.eq_image})` }" > </div>
+          </div>        
         </div>
 
         <div class="modal-footer">
@@ -71,6 +76,11 @@
     </div>
   </div>
 </template>
+
+
+
+
+
 <script>
 import axios from 'axios';
 
@@ -88,6 +98,17 @@ export default {
       //console.log(value);
     }
   },
+  computed:{
+    equipmentitems(){
+      const equipments = this.form.equipments
+      //console.log(equipments);
+      if(equipments && equipments.length > 0){
+       // console.log(equipments.filter(item=> item));//filter เลือกเฉพาะที่มีค่า item 
+        return(equipments.filter(item=> item))
+      }
+      return [];
+    }
+  },
   data() {
     return {
       equipments:[],
@@ -98,7 +119,6 @@ export default {
         bk_time_start:{date:"",time:""},
         bk_time_end:{date:"",time:""},
         equipments:[]
-
       }
     };
   },
@@ -117,14 +137,51 @@ export default {
       .then(response => {  this.equipments = response.data })
       .catch(err =>this.alertify.error(err.response.data.message))
     },
+
+
     //บันทึก
     onSubmit(){
       this.$validator.validateAll().then(valid=>{
         if(!valid) return;
-        console.log(this.form)
+       // console.log(this.form)
+        const requestData = { ...this.form  }
+        requestData.bk_time_start = this.onMeargedatetime(requestData.bk_time_start)
+        requestData.bk_time_end = this.onMeargedatetime(requestData.bk_time_end)
+        requestData.equipments = this.equipmentitems.map(item => item.eq_id)
+        //console.log(requestData)
+
+        axios.post('/api/booking',requestData) //ส่งข้อมูลไป backend เพื่อ save ลง DB
+        .then(response=>{
+          //console.log(response.data)
+          this.onResetdata();
+          this.alertify.success('จองห้องประชุมสำเร็จ')
+          this.jquery("#booking-dialog").modal('hide');
+        })
+        .catch(err => this.alertify.error(err.response.data.message))
       })
-    
+    },
+
+    //รวมวันที่เวลาเข้าด้วยกัน
+    onMeargedatetime({date,time}){
+      const datetime = new Date(date);
+      const [hr,mn] = time.split(':');
+      datetime.setHours(hr,mn);
+      return datetime;
+    },
+    //ล้างข้อมูล form
+    onResetdata(){
+      this.$validator.reset();
+      this.form = {    
+        tb_rooms_r_id:"",
+        bk_title:"",
+        bk_detail:"",
+        bk_time_start:{date:"",time:""},
+        bk_time_end:{date:"",time:""},
+        equipments:[]
+      }
     }
+
+
   }
 };
 </script>
@@ -143,5 +200,15 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow:ellipsis;
+}
+.img-equipments{
+  width:100px;
+  height:70px;
+  border:solid 1px #d0d0d0;
+  display: inline-block;
+  margin: 1px;
+  background-position: center center;
+  background-repeat:no-repeat;
+  background-size: contain;
 }
 </style>

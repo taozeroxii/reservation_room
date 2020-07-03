@@ -22,7 +22,7 @@
               <button @click="onBooking(item)" class="btn btn-info">
                 <i class="fa fa-ticket"> จองห้องนี้</i>
               </button>
-              <button class="btn btn-secondary">
+              <button @click="onDetail(item)" class="btn btn-secondary">
                 <i class="fa fa-info"> รายละเอียด</i>
               </button>
             </div>
@@ -33,19 +33,25 @@
 
     <Pagination :data="rooms" :page="page" @onPage="onPage($event)" />
     <BookingDialog :room="roomItem" @onClose="roomItem = null" />
+    <BookingDetailDialog :room="roomDetailItem" @onClose="roomDetailItem = null" />
+
   </Layout>
 </template>
 
 <script>
+import Layout from  '@/components/layout'
 import Search from "@/components/Search";
-import { mapState } from "vuex";
 import Pagination from "@/components/Pagination";
 import BookingDialog from "./BookingDialog";
+import BookingDetailDialog from "./BookingDetailDialog";
+import { mapState } from "vuex";
+
 export default {
   components: {
     Search,
     Pagination,
-    BookingDialog
+    BookingDialog,
+    BookingDetailDialog
   },
   computed: {
     ...mapState(["rooms"])
@@ -59,7 +65,8 @@ export default {
       ],
       page: 1,
       search: "",
-      roomItem: null
+      roomItem: null,
+      roomDetailItem:null
     };
   },
   mounted() {
@@ -71,6 +78,11 @@ export default {
       // console.log(item)
       this.roomItem = item;//เก็บค่า roomItem = item คือค่าไอเท็มนั้นๆทั้งหมด เพื่อส่งค่าผ่าน props ไปหน้า bookingdialog
     },
+    //เมื่อกดปุ่ม Detail  modal ตามไอดีปุ่มนั้นๆ 
+    onDetail(item) {
+      this.roomDetailItem = item;
+    },
+
     onSearch(search) {
       this.search = search;
       this.$store.dispatch("set_booking_rooms", {
