@@ -27,7 +27,7 @@ router.get('/history',[
     query('page').isInt()
 ],async (req,res)=>{
     try{
-        res.json(await bookingService.findHistory(req.query))
+        res.json(await bookingService.findHistory(req.query,req.session.userLogin.u_id))
     }
     catch(ex){
         res.error(ex)

@@ -10,13 +10,13 @@ const security = {
     
     authenticated(req, res, next) {
 
-        req.session.userLogin = {
+      /*  req.session.userLogin = {
             "u_id": 1,
             "u_username": "admin",
             "u_firstname": "admin",
             "u_lastname": "tao",
             "u_role": "admin"
-        }
+        }*/
 
         try {
             if (req.session.userLogin) { return next(); }

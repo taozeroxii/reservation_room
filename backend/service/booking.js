@@ -6,13 +6,13 @@ const table = {
 }
 
 module.exports = {
-    findHistory(value){
+    findHistory(value,tb_users_u_id){
         return new Promise((resolve, reject) => {
             const limitPage = configs.limitPage;
             const startpage = ((value.page || 1) - 1) * limitPage;//สูตรการแบ่งหน้า
             const sqls = {
-                count: `SELECT COUNT(*) as 'rows' FROM ${table.bk} `,
-                select: `SELECT * FROM ${table.bk}  `
+                count: `SELECT COUNT(*) as 'rows' FROM ${table.bk} WHERE tb_users_u_id = ${tb_users_u_id}`,
+                select: `SELECT * FROM ${table.bk} WHERE tb_users_u_id = ${connection.escape(tb_users_u_id) }`
             }
             
 
@@ -57,6 +57,13 @@ module.exports = {
                     tb_users_u_id: value.tb_users_u_id,
                     tb_rooms_r_id: value.tb_rooms_r_id
                 }
+
+                //ตรวจสอบวันที่จองและวันสิ้นสุด
+                if(bkmodel.bk_time_start >= bkmodel.bk_time_end ){
+                    return reject(new Error('วันเวลาจองไม่ถูกต้อง'))
+                }
+
+
                 connection.query(`INSERT INTO ${table.bk} set ?`, bkmodel, (bkError, bkResult) => {
                     if (bkError) {
                         connection.rollback();

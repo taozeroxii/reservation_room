@@ -2,8 +2,8 @@
   <Layout>
     <Search :types="search_types" @onSearch="onSearch($event)" />
     <div class="form-group">
-      <router-link class="btn btn-menu" :to="{name:'booking-room'}">รายการข้อมูล</router-link>
-      <router-link class="btn btn-menu" :to="{name:'room-form'}">เพิ่มข้อมูลใหม่</router-link>
+      <router-link class="btn btn-menu" :to="{name:'booking-room'}">จองห้องประชุม</router-link>
+      <router-link class="btn btn-menu" :to="{name:'booking-history'}">ประวัติการจอง</router-link>
     </div>
 
     <div class="card mb-3" v-for="item in rooms.result" :key="item.r_id">
@@ -33,7 +33,7 @@
 
     <Pagination :data="rooms" :page="page" @onPage="onPage($event)" />
     <BookingDialog :room="roomItem" @onClose="roomItem = null" />
-    <BookingDetailDialog :room="roomDetailItem" @onClose="roomDetailItem = null" />
+    <BookingDetailDialog :room="roomDetailItem" @onClose="roomDetailItem = null" @onBooking="roomItem = $event"/>
 
   </Layout>
 </template>

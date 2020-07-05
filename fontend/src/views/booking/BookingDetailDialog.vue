@@ -1,7 +1,7 @@
 <template>
   <div class="modal fade" tabindex="-1" role="dialog" id="booking-detaildialog">
     <div class="modal-dialog" role="document">
-      <form class="modal-content" @submit.prevent="onSubmit()">
+      <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
             <i class="fa fa-info"></i> รายละเอียดห้องประชุม
@@ -11,13 +11,37 @@
           </button>
         </div>
 
-        <div class="modal-body">
+        <div class="modal-body" v-if="roomItem">
+          <div class="form-group">
+            <img class="img-fluid" :src="`/api/uploads/${roomItem.r_image}`" :alt="roomItem.r_name">
+          </div>
+
+          <div class="row">
+            <div class="col-sm-4 form-group">ชื่อห้อง</div>
+            <div class="col-sm-8 form-group"> : {{roomItem.r_name}}</div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-4 form-group">ขนาดความจุ</div>
+            <div class="col-sm-8 form-group"> : {{roomItem.r_capacity}}  คน</div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-4 form-group">การจอง</div>
+            <div class="col-sm-8 form-group">: {{roomItem.r_booking}} ครั้ง</div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-4 form-group">รายละเอียด</div>
+            <div class="col-sm-8 form-group">: {{roomItem.r_detail || 'ไม่มีข้อมูล' }} </div>
+          </div>
          
         </div>
+
         <div class="modal-footer">
-          <button type="submit" class="btn btn-info btn-block mt-2 mb-4">จองห้องประชุมนี้</button>
+          <button @click="onBooking()" class="btn btn-info btn-block mt-2 mb-4">จองห้องประชุมนี้</button>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
@@ -43,11 +67,19 @@ export default {
       axios.get(`/api/booking/room/${value.r_id}`)
       .then(response =>{
         this.jquery("#booking-detaildialog").modal();
-        console.log(response.data)
+        // console.log(response.data)
+        this.roomItem = response.data
+       
       })
       .catch(err =>{
         this.alertify.error(err.response.data.message)
       })
+    }
+  },
+
+  data(){
+    return{
+      roomItem:null
     }
   },
 
@@ -56,6 +88,18 @@ export default {
     this.jquery("#booking-detaildialog").on('hidden.bs.modal',(e) => {
        this.$emit('onClose',event);
     });
+  },
+
+  methods:{
+    //ฟังก์ชันเมื่อกดจองให้มันปิด modal แล้วไปเปิดหน้าจอง
+    onBooking(){
+      this.jquery("#booking-detaildialog").modal('hide');
+      const room = {... this.room};
+      setTimeout(() => {
+         this.$emit('onBooking',room);//สร้าง emit ส่งค่ากลับไปให้หน้า bookingroomlist เพื่อไปเปิดหน้า bookingdialog
+      }, 500);
+    }
+
   }
 
 
@@ -70,5 +114,8 @@ export default {
 .modal-footer {
   padding-left: 5%;
   padding-right: 5%;
+}
+img-fluid{
+  border:solid 1px #6C7570;
 }
 </style>

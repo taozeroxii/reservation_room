@@ -8,6 +8,7 @@ import EquipmentForm from './views/equipment/EquipmentForm'
 import RoomList from './views/room/RoomList'
 import RoomForm from './views/room/RoomForm'
 import BookingRoomList from './views/booking/BookingRoomList'
+import BookingHistoryList from './views/booking/BookingHistoryList'
 
 Vue.use(Router)
 
@@ -19,11 +20,14 @@ const router = new Router({
     //equipment
     { path: '/equipment', name: 'equipment-list', component: EquipmentList, meta: { auth: true }},
     { path: '/equipment/form', name: 'equipment-form', component: EquipmentForm, meta: { auth: true }},
+
     //room
     { path: '/room', name: 'room-list', component: RoomList, meta: { auth: true }},
     { path: '/room/form', name: 'room-form', component: RoomForm, meta: { auth: true }},
+    
     //booking
     { path: '/booking/room', name: 'booking-room', component: BookingRoomList, meta: { auth: true }},
+    { path: '/booking/history', name: 'booking-history', component: BookingHistoryList, meta: { auth: true }},
     
     { path: '/register', name: 'register', component: Register },
     { path: '/login', name: 'login', component: Login }
