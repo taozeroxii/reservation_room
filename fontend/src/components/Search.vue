@@ -4,7 +4,7 @@
       <option v-for="item in types" :key="item.value" :value="item.value">{{item.name}}</option>
     </select>
     <input
-      type="text"
+      :type="getInputType"
       class="form-control"
       v-model.trim="form.search_text"
       placeholder="ค้นหาข้อมูล"
@@ -21,6 +21,15 @@ export default {
     types: {
       type: Array,
       required: true
+    }
+  },
+  computed:{
+    //แปลี่ยนค่า type ให้ input
+    getInputType(){
+      const findType = this.types.find(type => type.value == this.form.search_key)
+      //console.log(findType)
+      if(findType && findType.type) return findType.type 
+      return "text";
     }
   },
   data() {

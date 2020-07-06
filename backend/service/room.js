@@ -3,6 +3,15 @@ const configs = require("../configs/index")
 
 
 module.exports = {
+    findSelect(){
+        return new Promise((resolve,reject)=>{
+            connection.query(`SELECT r_id,r_name FROM tb_rooms`,(error,result)=>{
+                if(error) return reject(error)
+                resolve(result)
+            });
+        });
+    },
+
     findDetailforBooking(id){
         return new Promise((resolve,reject)=>{
             connection.query(`
@@ -53,6 +62,7 @@ module.exports = {
             })
         })
     },
+
     onCreate(value) {
         return new Promise((resolve, reject) => {
             connection.query('INSERT INTO tb_rooms SET ?', value, (err, result) => {
@@ -61,6 +71,7 @@ module.exports = {
             })
         })
     },
+
     findOne(column) {
         return new Promise((resolve, reject) => {
             connection.query('SELECT * FROM tb_rooms WHERE ?', column, (error, result) => {
@@ -69,6 +80,7 @@ module.exports = {
             })
         })
     },
+
     onDelete(id) {
         return new Promise((resolve, reject) => {
             connection.query('DELETE FROM tb_rooms WHERE r_id=?', [id], (err, result) => {
@@ -77,6 +89,7 @@ module.exports = {
             })
         })
     },
+
     onUpdate(id, value) {
         return new Promise((resolve, reject) => {
             const $query = `

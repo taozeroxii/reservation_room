@@ -1,11 +1,31 @@
 const connection = require('../configs/database');
-const configs = require("../configs")
+const configs = require("../configs");
+const { connect } = require('../configs/database');
 const table = {
     bk: 'tb_bookings',
     bkeq: 'tb_bookings_has_tb_equipments'
 }
 
 module.exports = {
+    findById(id){
+        return new Promise ((resolve,reject)=>{
+            connection.query(`SELECT * FROM ${table.bk} WHERE bk_id = ?`,[id],(error,result)=>{
+                if(error) return reject(error)
+                resolve(result.length > 0 ? result[0] : null)
+            } )
+        })
+    },
+    findByroomId(roomId){
+        return new Promise((resolve,reject)=>{
+            connection.query(`
+                SELECT * FROM ${table.bk} 
+                WHERE tb_rooms_r_id=? AND bk_status <> 'not allowed'`,roomId,(error,result) => {
+                if(error) return reject(error);
+                resolve(result);
+            })
+        })
+
+    },
     findHistory(value,tb_users_u_id){
         return new Promise((resolve, reject) => {
             const limitPage = configs.limitPage;
@@ -13,6 +33,42 @@ module.exports = {
             const sqls = {
                 count: `SELECT COUNT(*) as 'rows' FROM ${table.bk} WHERE tb_users_u_id = ${tb_users_u_id}`,
                 select: `SELECT * FROM ${table.bk} WHERE tb_users_u_id = ${connection.escape(tb_users_u_id) }`
+            }
+            
+
+            //แสดงข้อมูลเมื่อมีการค้นหา
+            if (value.search_key && value.search_text) {
+                const key = value.search_key;
+                const txt = value.search_text;
+                const sqlSerch = ` AND ${connection.escapeId(key)} LIKE ${connection.escape(`%${txt}%`)}`;
+                sqls.count += sqlSerch;
+                sqls.select += sqlSerch;
+            }
+
+            //เรียงจากวันล่าสุดย้อนมา
+            sqls.select += " ORDER BY bk_created DESC ";
+            
+            //หาจำนวนแถว
+            connection.query(sqls.count, (error, result) => {
+                if (error) return reject(error);
+                const items = { result: [], rows: result[0].rows, limit: limitPage };
+                //แบ่งหน้า
+                sqls.select += `LIMIT ${connection.escape(startpage)},${limitPage}`
+                connection.query(sqls.select, (err, result2) => {
+                    if (err) return reject(err);
+                    items.result = result2 //ให้ค่า result ที่เป็น array แรกเก็บค่า result 2 ที่ดึงข้อมูลมาใหม่
+                    resolve(items);
+                })
+            })
+        })
+    },
+    find(value){
+        return new Promise((resolve, reject) => {
+            const limitPage = configs.limitPage;
+            const startpage = ((value.page || 1) - 1) * limitPage;//สูตรการแบ่งหน้า
+            const sqls = {
+                count: `SELECT COUNT(*) as 'rows' FROM ${table.bk} `,
+                select: `SELECT * FROM ${table.bk} `
             }
             
 
@@ -84,6 +140,18 @@ module.exports = {
                         resolve(bkeqResult)
                     })
                 })
+            })
+        })
+    },
+    onUpdate(id,value){
+        return new Promise((resolve,reject)=>{
+            value.bk_updated = new Date();
+            connection.query(`
+            UPDATE ${table.bk} 
+            SET ? 
+            WHERE bk_id = ${connection.escape(id)}`,value,(error,result)=>{
+                if(error) return reject(error)
+                resolve(result)
             })
         })
     }

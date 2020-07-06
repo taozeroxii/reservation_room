@@ -60,8 +60,13 @@ export default {
 
   data(){
       return{
-          search_types:[],
-          page:1
+          search_types:[
+              { name:'หัวข้อประชุม',value:'bk_title'},
+              { name:'วันที่เริ่ม',value:'bk_time_start',type:'date'},
+              { name:'วันที่สิ้นสุด',value:'bk_time_end',type:'date'}
+            ],
+          page:1,
+          search:{}
       }
   },
 
@@ -78,6 +83,23 @@ export default {
           const statusClass = {};
           statusClass[item.bk_status] = true
           return statusClass;
+      },
+
+      //search filter
+      onSearch(search){
+        this.search = search;
+        this.$store.dispatch("set_booking_historys",{
+            page:1,
+            ...this.search
+        })
+      },
+
+      onPage(page){
+        this.page = page;
+        this.$store.dispatch("set_booking_historys",{
+            page:this.page,
+            ...this.search
+        })
       }
   }
 };
