@@ -126,7 +126,7 @@ router.delete('/manage/:id',[
         req.validate();
         const finditem = await bookingService.findById(req.params.id)
         if(!finditem) throw new Error('ไม่พบข้อมูลการจอง')
-        res.json(await bookingService.onUpdate(finditem.bk_id,req.body))
+        res.json(await bookingService.onDelete(finditem.bk_id,req.body))
         //res.json({mseeage:'update status',body:req.body});
     }
     catch(ex){res.error(ex)}

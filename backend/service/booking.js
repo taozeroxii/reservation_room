@@ -145,11 +145,19 @@ module.exports = {
     },
     onUpdate(id,value){
         return new Promise((resolve,reject)=>{
-            value.bk_updated = new Date();
             connection.query(`
             UPDATE ${table.bk} 
-            SET ? 
+            SET ? ,
+            bk_updated = NOW()
             WHERE bk_id = ${connection.escape(id)}`,value,(error,result)=>{
+                if(error) return reject(error)
+                resolve(result)
+            })
+        })
+    },
+    onDelete(id,value){
+        return new Promise((resolve,reject)=>{
+            connection.query(` DELETE FROM ${table.bk}  WHERE bk_id = ${connection.escape(id)}`,value,(error,result)=>{
                 if(error) return reject(error)
                 resolve(result)
             })
