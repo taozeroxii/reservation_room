@@ -73,7 +73,7 @@ router.post('/', [
 
 
 
-////#region สำหรับผู้ดูแลระบบ
+//#region สำหรับผู้ดูแลระบบ
 //ดึงข้อมูลห้องประชุมมาทำ select 
 router.get('/rooms/select', async (req, res) => {
     try {
@@ -133,7 +133,7 @@ router.delete('/manage/:id',[
 })
 
 
-////#endregion
+//#endregion
 
 
 

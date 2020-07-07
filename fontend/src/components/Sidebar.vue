@@ -14,6 +14,7 @@ export default {
       admin: {
         header: "<i class='fa fa-unlock' > ส่วนของผู้ดูแลระบบ</i>",
         navs: [
+          { name: "ปฎิทินรายการห้องประชุม",link: {name:"booking-calendar"}},
           { name: "ข้อมูลการจองห้องประชุม" },
           { name: "ข้อมูลอุปกรณ์ห้องประชุม", link: {name:"equipment-list"}},
           { name: "ข้อมูลห้องประชุม",link: {name:"room-list"} }

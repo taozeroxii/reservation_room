@@ -7,12 +7,17 @@ import Layout from "@/components/layout.vue"; //สร้างโกลบอ�
 
 import 'font-awesome/css/font-awesome.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.js';
 import 'alertifyjs/build/css/alertify.css'
 import 'alertifyjs/build/css/themes/default.css'
-import * as alertify from  'alertifyjs'
 import './assets/styles.css';
+import 'fullcalendar/dist/fullcalendar.css'
+
+
 import * as jquery from 'jquery';
+import * as alertify from  'alertifyjs'
+import 'bootstrap/dist/js/bootstrap.js';
+import 'fullcalendar'
+
 
 
 Vue.config.productionTip = false

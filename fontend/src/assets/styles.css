@@ -63,3 +63,13 @@ label{
       margin-bottom: 30px;
   }
 
+  .fc-event .fc-time , 
+  .fc-event .fc-title {
+      color:white;
+      
+  }
+
+  .fc-event.allowed{
+      background-color:#28a745;
+  }
+  

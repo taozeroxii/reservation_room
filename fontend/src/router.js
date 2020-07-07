@@ -9,6 +9,7 @@ import RoomList from './views/room/RoomList'
 import RoomForm from './views/room/RoomForm'
 import BookingRoomList from './views/booking/BookingRoomList'
 import BookingHistoryList from './views/booking/BookingHistoryList'
+import BookingCalendar from './views/booking/BookingCalendar'
 
 Vue.use(Router)
 
@@ -28,6 +29,7 @@ const router = new Router({
     //booking
     { path: '/booking/room', name: 'booking-room', component: BookingRoomList, meta: { auth: true }},
     { path: '/booking/history', name: 'booking-history', component: BookingHistoryList, meta: { auth: true }},
+    { path: '/booking/calendar', name: 'booking-calendar', component: BookingCalendar, meta: { auth: true }},
     
     { path: '/register', name: 'register', component: Register },
     { path: '/login', name: 'login', component: Login }
