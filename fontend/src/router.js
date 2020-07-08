@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import About from './views/About.vue'
 import Register from './views/Register'
+import PageNotFound from './views/PageNotFound'
 import Login from './views/Login'
 import EquipmentList from './views/equipment/EquipmentList'
 import EquipmentForm from './views/equipment/EquipmentForm'
@@ -32,7 +34,10 @@ const router = new Router({
     { path: '/booking/calendar', name: 'booking-calendar', component: BookingCalendar, meta: { auth: true }},
     
     { path: '/register', name: 'register', component: Register },
-    { path: '/login', name: 'login', component: Login }
+    { path: '/about', name: 'about', component: About },
+    { path: '/login', name: 'login', component: Login },
+
+    { path: "*", component: PageNotFound }
   ]
 })
 
