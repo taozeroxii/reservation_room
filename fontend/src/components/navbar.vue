@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     onLogout() {
-      axios.post("api/account/logout").then(response => {
+      axios.post("/api/account/logout").then(response => {
         console.log(response);
         this.$store.commit("set_user", null);
         console.log("set store is:", this.$store.state.user);
