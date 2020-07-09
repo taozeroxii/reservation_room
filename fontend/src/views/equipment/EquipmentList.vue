@@ -74,7 +74,7 @@ export default {
   },
   created() {
     this.$store.dispatch("set_equipments");
-    console.log(this.equipments);
+    //console.log(this.equipments);
   },
   methods: { 
     //แก้ไขข้อมูลโดยส่งไปที่หน้าcreate 

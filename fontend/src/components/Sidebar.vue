@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    <SidebarNav :item="admin" class="sidebar-nav" />
+    <SidebarNav v-if="userLogin.u_role === 'admin'" :item="admin" class="sidebar-nav" />
     <SidebarNav :item="user" class="sidebar-nav" />
     <SidebarNav :item="setting" class="sidebar-nav" />
   </div>
@@ -8,14 +8,19 @@
 
 <script>
 import SidebarNav from "./SidebarNav";
+import{ mapState } from 'vuex'
 export default {
+  computed:{
+    ...mapState({
+      userLogin: state => state.user // map ค่า state จาก store ลง ตัวแปร object userLogin และเอาไปเช็คว่าเป็นสเตตัสอะไร 
+    })
+  },
   data() {
     return {
       admin: {
         header: "<i class='fa fa-unlock' > ส่วนของผู้ดูแลระบบ</i>",
         navs: [
-          { name: "ปฎิทินรายการห้องประชุม",link: {name:"booking-calendar"}},
-          { name: "ข้อมูลการจองห้องประชุม" },
+          { name: "ข้อมูลการจองห้องประชุม" ,link: {name:"booking-manage"}},
           { name: "ข้อมูลอุปกรณ์ห้องประชุม", link: {name:"equipment-list"}},
           { name: "ข้อมูลห้องประชุม",link: {name:"room-list"} }
         ]
@@ -23,6 +28,7 @@ export default {
       user: {
         header: "<i class='fa fa-user' > ส่วนของผู้ใช้งาน</i>",
         navs: [
+          { name: "ปฎิทินรายการห้องประชุม",link: {name:"booking-calendar"}},
           { name: "การจองห้องประชุม",link: {name:"booking-room"}   },
           { name: "แก้ไขข้อมูลส่วนตัว" },
           { name: "เปลี่ยนรหัสผ่าน" }

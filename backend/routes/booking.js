@@ -4,6 +4,7 @@ const roomservice = require(`../service/room`)
 const bookingService = require('../service/booking')
 const equipmentsService = require('../service/equipment');
 const booking = require('../service/booking');
+const { isInRoles } = require('../configs/security');
 
 router.get('/', [query('page').not().isEmpty().toInt().isInt()], async (req, res) => {
     try {
@@ -71,9 +72,6 @@ router.post('/', [
     catch (ex) { res.error(ex); }
 })
 
-
-
-//#region สำหรับผู้ดูแลระบบ
 //ดึงข้อมูลห้องประชุมมาทำ select 
 router.get('/rooms/select', async (req, res) => {
     try {
@@ -82,6 +80,9 @@ router.get('/rooms/select', async (req, res) => {
     catch (ex) { res.error(ex); }
 })
 
+
+
+//#region สำหรับผู้ดูแลระบบ
 //ดึงข้อมูลการจองห้องประชุมมาจาก roomid มาใส่ใน calendar
 router.get('/calendar/room/:id',[
     param('id').isInt()
@@ -94,7 +95,7 @@ router.get('/calendar/room/:id',[
 })
 
 //แสดงรายการจองห้องประชุมทั้งหมด
-router.get('/manage', [query('page').isInt()],async (req,res) => {
+router.get('/manage',isInRoles(['admin']), [query('page').isInt()],async (req,res) => {
     try{
         req.validate();
         res.json(await bookingService.find(req.query))
@@ -103,7 +104,7 @@ router.get('/manage', [query('page').isInt()],async (req,res) => {
 })
 
 //แก้ไขสถานะการจองอนุมัติไม่อนุมัติ
-router.put('/manage/:id',[
+router.put('/manage/:id',isInRoles(['admin']),[
     param('id').isInt(),
     check('bk_status').not().isEmpty().isIn(['allowed','not allowed'])
 ],async  (req,res) => {
@@ -118,9 +119,8 @@ router.put('/manage/:id',[
 })
 
 //ลบข้อมูลการจองที่ไม่ได้อนุมัติ
-router.delete('/manage/:id',[
-    param('id').isInt(),
-    check('bk_status').not().isEmpty().isIn(['allowed','not allowed'])
+router.delete('/manage/:id',isInRoles(['admin']),[
+    param('id').isInt()
 ],async  (req,res) => {
     try{
         req.validate();
