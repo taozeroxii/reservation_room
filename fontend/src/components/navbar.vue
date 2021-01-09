@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
      <router-link class="navbar-brand img" :to="{name:'home'}">
-      <img src="/img/logo.png" alt />
+     ระบบจองห้องประชุม
     </router-link>
     <button
       class="navbar-toggler"
@@ -20,7 +20,7 @@
         <li class="nav-item"></li>
         <li class="nav-item"></li>
       </ul>
-      <span class="navbar-text mr-4 text-info">ผู้ใช้งาน:{{this.$store.state.user.u_firstname}} {{this.$store.state.user.u_lastname}} </span>
+      <span class="navbar-text mr-4 text-info">ผู้ใช้งาน : {{this.$store.state.user.u_firstname}} {{this.$store.state.user.u_lastname}} </span>
 
       <a @click="onLogout()" class="btn-logout">
         <i class="fa fa-sign-out" aria-hidden="true">logout</i>

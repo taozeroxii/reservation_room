@@ -18,7 +18,10 @@ import * as alertify from  'alertifyjs'
 import 'bootstrap/dist/js/bootstrap.js';
 import 'fullcalendar'
 
-
+//filter กรองข้อมูลที่เป็น date จากbackend ทั้งหมดให้เป็นฟอแมทที่ต้องการ
+Vue.filter('date',(value,format = 'YYYY-MM-DD hh.mm a' )=>{
+  return jquery.fullCalendar.moment(value).format(format).toUpperCase();
+})
 
 Vue.config.productionTip = false
 Vue.prototype.jquery = jquery;

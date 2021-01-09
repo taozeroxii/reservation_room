@@ -7,6 +7,26 @@ const table = {
 }
 
 module.exports = {
+    findByCheckDateTime({bk_time_start,bk_time_end,tb_rooms_r_id}) {
+        return new Promise ((resolve,reject) => {
+            const start    = new Date(bk_time_start);
+            const end      = new Date(bk_time_end);
+            connection.query(`
+                 SELECT COUNT(*) as bk_count 
+                 FROM ${table.bk}
+                 WHERE
+                     bk_time_start BETWEEN ${connection.escape(start)} AND ${connection.escape(end)}
+                 OR
+                     bk_time_end BETWEEN ${connection.escape(start)} AND ${connection.escape(end)}
+                 AND 
+                     tb_rooms_r_id = ${tb_rooms_r_id}`,(error,result)=>{
+                     if(error) return reject(error)
+                     //console.log(result.length )
+                     console.log(result[0].bk_count)
+                     resolve(result.length > 0 ? result[0].bk_count > 0 : false);
+                })
+        });
+    },
     findById(id){
         return new Promise ((resolve,reject)=>{
             connection.query(`SELECT * FROM ${table.bk} WHERE bk_id = ?`,[id],(error,result)=>{
@@ -100,7 +120,15 @@ module.exports = {
     },
     onCreate(value) {
         return new Promise((resolve, reject) => {
-            // resolve(value)
+
+            //ตรวจสอบวันว่ามีการเลือกไปแล้วไหมในระบบ
+            this.findByCheckDateTime(value)
+            .then(bk_count => {
+                console.log(bk_count);
+            })
+            .catch(reject)
+
+
             connection.beginTransaction(tsError => {
                 if (tsError) return reject(tsError);
 

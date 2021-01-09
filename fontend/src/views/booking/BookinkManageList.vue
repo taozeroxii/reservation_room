@@ -22,8 +22,8 @@
                     <tr v-for="item in bookings.result" :key="item.bk_id" :class="getApplyStatusClass(item)">
                         <td>{{item.bk_id}}</td>
                         <td>{{item.bk_title}}</td>
-                        <td>{{item.bk_time_start}}</td>
-                        <td>{{item.bk_time_end}}</td>
+                        <td>{{item.bk_time_start | date}}</td>
+                        <td>{{item.bk_time_end | date}}</td>
                         <td class="btns">
                             <div v-if="item.bk_status === 'pending'">
                                 <button @click="onUpdateStatus('allowed',item)" class="btn btn-warning mr-2"> <i class="fa fa-check-circle"></i>  อนุมัติ </button>

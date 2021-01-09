@@ -8,7 +8,7 @@
       <div class="card-body">
         <router-link v-for="(item,index) in item.navs" 
         :key="index" 
-        :to="item.link || '' "
+        :to="item.link || '#' "
         class="sidebar-link" >
           <i class="fa fa-chevron-circle-right"> {{item.name}}  </i>
         </router-link>
@@ -46,13 +46,14 @@ export default {
   text-decoration: none;
 }
 
-.sidebar-link.active,
-.sidebar-link.active .fa-chevron-circle-right,
-.sidebar-link:hover .fa-chevron-circle-right,
-.sidebar-link:hover
+.router-link-active,
+.router-link-active .fa-chevron-circle-right,
+.router-link-active.fa-chevron-circle-right,
+.router-link-active
  {
   color: black;
   background-color: #dee2e6;
 }
+
 
 </style>

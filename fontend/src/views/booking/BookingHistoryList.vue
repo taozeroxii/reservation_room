@@ -23,8 +23,8 @@
                     <tr v-for="item of histories.result"  :key="item.bk_id" :class="getStatusClass(item)">
                         <td>{{item.bk_id}}</td>
                         <td>{{item.bk_title}}</td>
-                        <td>{{item.bk_time_start}}</td>
-                        <td>{{item.bk_time_end}}</td>
+                        <td>{{item.bk_time_start | date}}</td>
+                        <td>{{item.bk_time_end | date}}</td>
                         <td class="text-right"> 
                             <label class="badge badge-warning" v-if="item.bk_status == 'pending'"><i class="fa fa-hourglass"></i>  รอดำเนินการ </label>
                             <label class="badge badge-success" v-if="item.bk_status == 'allowed'"><i class="fa fa-check-square-o"></i>  อนุมัติแล้ว </label>

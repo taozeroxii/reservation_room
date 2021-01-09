@@ -33,7 +33,7 @@
               <td>{{item.r_name}}</td>
               <td>{{item.r_capacity}}</td>
               <td>{{item.r_detail||'ไม่มีข้อมูล'}}</td>
-              <td>{{item.r_updated}}</td>
+              <td>{{item.r_updated | date}}</td>
               <td class="text-right">
                 <i v-on:click="onUpdate(item)" class="fa fa-edit text-info mr-3 pointer"></i>
                 <i @click="onDelete(item)"  class="fa fa-trash text-danger pointer"></i>
