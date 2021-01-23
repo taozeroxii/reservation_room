@@ -11,22 +11,15 @@ const security = {
 
     //ตรวจสอบการเข้าสู่ระบบ
     authenticated(req, res, next) {
-       req.session.userLogin = {
-            "u_id": 7,
-            "u_username": "admin",
-            "u_firstname": "admin",
-            "u_lastname": "tao",
-            "u_role": "admin"
-        }
+    //    req.session.userLogin = {
+    //         "u_id": 7,
+    //         "u_username": "admin",
+    //         "u_firstname": "admin",
+    //         "u_lastname": "tao",
+    //         "u_role": "admin"
+    //     }
         
-       /*req.session.userLogin = {
-            "u_id": 9,
-            "u_username": "user",
-            "u_firstname": "user",
-            "u_lastname": "tao",
-            "u_role": "user"
-        }*/
-
+  
         try {
             if (req.session.userLogin) { return next(); }
             throw new Error('Unauthorized');

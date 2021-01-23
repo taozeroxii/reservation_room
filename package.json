@@ -6,7 +6,9 @@
   "scripts": {
     "start": "concurrently \"npm run start:backend\" \"npm run start:fontend\"",
     "start:fontend": "cd fontend && npm run serve",
-    "start:backend": "cd backend && npm start"
+    "start:backend": "cd backend && npm start",
+    "build:fontend":"cd fontend && npm run build",
+    "start:prod":"cd backend && npm run start:prod"
   },
   "keywords": [],
   "author": "",
