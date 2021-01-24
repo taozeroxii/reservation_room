@@ -32,7 +32,13 @@
           </div>
 
           <div v-if="errorMessage" class="alert alert-warning text-center">{{errorMessage}}</div>
+      <div class="col-sm-10">
 
+        <vue-recaptcha ref="recaptcha"
+          @verify="onVerify" sitekey="ํyour site key">
+        </vue-recaptcha>
+
+      </div>
           <div class="form-group button">
             <button type="submit" class="btn btn-info btn-block">เข้าสู่ระบบ</button>
             <button type="button" @click="ongoToRegister()" class="btn btn-secondary btn-block">ลงทะเบียน</button>
@@ -70,20 +76,29 @@ h1 {
 
 <script>
 import axios from "axios";
+import VueRecaptcha from 'vue-recaptcha';
 
 export default {
   data() {
     return {
       form: {
         u_username: "",
-        u_password: ""
+        u_password: "",
+        robot: false
       },
       errorMessage: ""
     };
   },
+  components: {
+    'vue-recaptcha': VueRecaptcha
+  },
   methods: {
     //ตรวจสอบ login
+    onVerify: function (response) {
+      if (response) this.form.robot = true;
+    },
     onSubmit() {
+      if (this.form.robot) {
       this.$validator.validateAll().then(valid => {
         if (!valid) return;
         axios
@@ -96,6 +111,7 @@ export default {
             this.errorMessage = err.response.data.message;
           });
       });
+      } this.errorMessage = 'โปรดกดยืนยัน';
     },
     ongoToRegister(){
       this.$router.push('/register')
